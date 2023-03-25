@@ -5,11 +5,13 @@ let formEl,
     dirTree,
     dirHolder,
     dirSubmit,
-    dirPath;
+    dirPath,
+    requestSent;
 
 let dirI = 0;
 let currSelected = null;
 let currUL = null;
+let currRows = [];
 
 let cleanHeaders = [];
 
@@ -34,6 +36,41 @@ window.addEventListener("DOMContentLoaded", () => {
 
     dirTree = JSON.parse(dirTreeJsonEl.getAttribute("data-json"));
     iterateDir(dirTree, "", null);
+
+    document.querySelector("#dummyframe").addEventListener("load", e => {
+        let success = e.target.contentWindow.document.querySelector("body").textContent == "file uploaded successfully" && requestSent ? true : false;
+
+        if (success) {
+            formChanges['ids'].forEach(trackid => {
+                let trackRow;
+
+                document.querySelectorAll(".data-row").forEach(entry => {
+                    if (entry.querySelector('[role="trackid"]').textContent == trackid) {
+                        trackRow = entry;
+                    }
+                });
+
+                for (const [key, value] of Object.entries(formChanges.changes)) {
+                    if (key == "file") {
+                        trackRow.querySelector('[role="artwork"]').textContent = formEl.querySelector("#preview").style["background-image"];
+                        trackRow.querySelector('[role="artwork"]').setAttribute("blobbed", true);
+                    } else {
+                        trackRow.querySelectorAll(".entry").forEach(entry => {
+                            if (entry.getAttribute("fieldmap") == key) {
+                                entry.textContent = value;
+                            }
+                        });
+                    }
+                }
+            });
+
+            formChanges = {
+                'ids': [],
+                'changes': {}
+            };
+            requestSent = false;
+        }
+    });
 
     tableHeaders.forEach(header => {
         let cleanHeader = header.toLowerCase();
@@ -69,7 +106,7 @@ window.addEventListener("DOMContentLoaded", () => {
     fileEl.addEventListener("change", handleFiles, false);
     formEl.addEventListener("submit", (e) => {
         formEl.querySelector('[name="json"]').value = JSON.stringify(formChanges);
-        // e.preventDefault();
+        requestSent = true;
     });
     formEl.addEventListener("change", e => {
         formChanges['ids'].includes(formEl.querySelector('[name="trackid"]').value) ? null : formChanges['ids'].push(formEl.querySelector('[name="trackid"]').value);
@@ -174,8 +211,22 @@ function renderTableRow(rowID, rowVals, artworks, tableBody) {
     });
 
     newRow.addEventListener("click", e => {
+        if (currRows.length > 0) {
+            currRows.forEach(row => {
+                row.classList.remove("selected");
+                currRows.pop(row);
+            });
+        }
+
+        currRows.push(newRow);
+        newRow.classList.add("selected");
+
         let str = newRow.querySelector('[role="artwork"]').textContent;
-        formEl.querySelector("#preview").style["background-image"] = "url(data:image/png;base64," + str.substring(2, str.length - 1) + ")";
+        if (newRow.querySelector('[role="artwork"]').getAttribute("blobbed") != "true") {
+            formEl.querySelector("#preview").style["background-image"] = "url(data:image/png;base64," + str.substring(2, str.length - 1) + ")";
+        } else {
+            formEl.querySelector("#preview").style["background-image"] = str;
+        }
         formEl.querySelector('[name="trackid"]').value = newRow.querySelector('[role="trackid"]').textContent;
 
         cleanHeaders.forEach(cleanHeader => {
