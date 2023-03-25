@@ -25,3 +25,6 @@ for i in range(0, 100):
 @app.route("/")
 def hello_world():
     return render_template('index.html', colHeads=colHeads, rows=rows)
+
+if __name__=="__main__":
+    app.run(debug=True,host='0.0.0.0')
