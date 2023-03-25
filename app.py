@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_assets import Environment, Bundle
 
 app = Flask(__name__)
@@ -11,7 +11,7 @@ assets.register('scss_all', scss)
 js = Bundle('js/main.js', filters='jsmin', output='all.js')
 assets.register('js_all', js)
 
-colHeads = ('File Name', 'Path', 'Tag', 'Title', 'Artist', 'Album Artist', 'Album', 'Track', 'Disc Number', 'Year',  'Genre', 'Comment', 'Codec', 'Bitrate', 'Frequency', 'Length', 'Modified')
+colHeads = ['File Name', 'Path', 'Tag', 'Title', 'Artist', 'Album Artist', 'Album', 'Track', 'Disc Number', 'Year',  'Genre', 'Comment', 'Codec', 'Bitrate', 'Frequency', 'Length', 'Modified']
 rows = []
 
 k = 0
@@ -25,3 +25,10 @@ for i in range(0, 100):
 @app.route("/")
 def hello_world():
     return render_template('index.html', colHeads=colHeads, rows=rows)
+
+@app.route("/send-info", methods = ['GET', 'POST'])
+def upload_file():
+    return request
+
+if __name__=="__main__":
+    app.run(debug=True,host='0.0.0.0')
