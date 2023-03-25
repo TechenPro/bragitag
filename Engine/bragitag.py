@@ -6,11 +6,24 @@ import json
 
 class BragitagEngine:
     
-    def __init__(self):
+    def __init__(self, config):
         self.metadata = {}
         self.track = {}
         self.art = {}
         self.data = [self.track, self.art]
+        self.root_dir = ''
+        self.parse_config(config)
+    
+    def parse_config(self, config_file):
+
+        with open(config_file, encoding="utf-8") as config:
+            configuration = dict((key, value) for key, value in 
+                (setting.split(": ") for setting in config.read().split("\n")))
+            
+            self.root_dir = configuration["ROOT_DIR"]
+
+            if not self.root_dir:
+                self.root_dir = "/Library"
         
     def loadMetaData(self, filePath):
         meta = music.load_file(os.path.join(filePath))
@@ -69,13 +82,13 @@ class BragitagEngine:
 
     
 def main():
-    engine = BragitagEngine()
-    root_folder = 'C:\\Users\\arire\\OneDrive - University of Utah\\_Projects\HackUSU23\\TestSongs\\\RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️'
+    engine = BragitagEngine("Engine/.config")
+
     filename = '01. Everything In Its Right Place.flac'
     nopicture = 'Hymns_004_TruthEternal_eng.mp3'
     
 
-    engine.loadMetaData(os.path.join(root_folder, nopicture))
+    engine.loadMetaData(os.path.join(engine.root_dir, nopicture))
 
     print(engine.data)
 
