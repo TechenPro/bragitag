@@ -3,8 +3,6 @@ import os
 import re
 import json
 
-files = dict()
-
 
 class bragitagEngine:
     
