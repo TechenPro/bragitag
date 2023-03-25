@@ -93,7 +93,6 @@ class BragitagEngine:
         where fileInfo is a dict containing an array of ids to change
         and a dict of metadata fields to change, and their new value
         """
-        file_info = json.loads(file_info)
         for track_id in file_info["ids"]:
             for field in file_info["changes"]:
                 self.files[track_id][field] = file_info["changes"][field]
@@ -108,14 +107,14 @@ class BragitagEngine:
         self.files[track_id] = music.load_file(os.path.join(self.track[track_id]["parentdir"], new_name) + ext[1])
 
 
-    def resolve_metadata_wildcards(self, track_id, string):
+    def resolve_metadata_macros(self, track_id, string):
         """if `string` contains metadata fields surrounded by '%', replace it with the provided track's metadata values
         EX: `The artist is: %artist%` -> `The artists is: The Beatles"""
-        customStr = ""
+        resolved_str = ""
         string_arr = string.split('%')
         for word in string_arr:
             if word in self.track[track_id].keys():
-                customStr += self.track[track_id][word]
+                resolved_str += self.track[track_id][word]
             
             elif word == "":
                 continue
