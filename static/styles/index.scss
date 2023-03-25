@@ -2,7 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 $primaryBg: #3e3e3e;
-$secondaryBg: #dddddd;
+$secondaryBg: #333333;
+$tertiaryBg: #2a2a2a;
+$fieldWhite: #dddddd;
 $accentYellow: #abab30;
 
 html {
@@ -109,7 +111,7 @@ html {
                     }
 
                     .field {
-                        background-color: $secondaryBg;
+                        background-color: $fieldWhite;
                         border: none;
                         transition: background 300ms;
                         padding: 6px 10px;
@@ -190,7 +192,7 @@ html {
                     margin-top: 16px;
 
                     &:hover {
-                        color: $secondaryBg;
+                        color: $fieldWhite;
                     }
                 }
             }
@@ -207,6 +209,16 @@ html {
 
                 .header {
                     width: 150px;
+                }
+
+                .data-row {
+                    &:nth-child(odd) {
+                        background-color: $secondaryBg;
+                    }
+
+                    &:nth-child(even) {
+                        background-color: $tertiaryBg;
+                    }
                 }
             }
         }

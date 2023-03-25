@@ -6,9 +6,9 @@ window.addEventListener("DOMContentLoaded", () => {
     previewEl = document.querySelector("#preview");
 
     fileEl.addEventListener("change", handleFiles, false);
-    formEl.addEventListener("submit", (e) => {
+    // formEl.addEventListener("submit", (e) => {
 
-    });
+    // });
 
     let thElm;
     let startOffset;

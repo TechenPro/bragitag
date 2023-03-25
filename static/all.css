@@ -443,3 +443,7 @@ html {
         width: max-content; }
         .s-main .panel.table .info .header {
           width: 150px; }
+        .s-main .panel.table .info .data-row:nth-child(odd) {
+          background-color: #333333; }
+        .s-main .panel.table .info .data-row:nth-child(even) {
+          background-color: #2a2a2a; }

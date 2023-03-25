@@ -15,7 +15,7 @@ colHeads = ['File Name', 'Path', 'Tag', 'Title', 'Artist', 'Album Artist', 'Albu
 rows = []
 
 k = 0
-for i in range(0, 100):
+for i in range(0, 30):
     newRow = {}
     for colHead in colHeads:
         newRow[colHead] = k
@@ -28,7 +28,11 @@ def hello_world():
 
 @app.route("/send-info", methods = ['GET', 'POST'])
 def upload_file():
-    return request
+    if request.method == 'POST':
+      f = request.files['file']
+      print(type(f))
+    #   f.save(secure_filename(f.filename))
+      return 'file uploaded successfully'
 
 if __name__=="__main__":
     app.run(debug=True,host='0.0.0.0')

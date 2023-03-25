@@ -25,7 +25,7 @@
     </header>
     <main class="s-main">
       <section class="panel edit">
-        <form action="/send-info" method="post" class="form" id="form">
+        <form action="/send-info" method="post" class="form" id="form" enctype="multipart/form-data">
           <div class="group cover">
               <label for="file" class="pointer">
                 <div class="preview" id="preview"></div>
@@ -90,7 +90,7 @@
           </thead>
           <tbody>
             {% for row in rows %}
-            <tr>
+            <tr class="data-row">
               {% for info in row %}
               <td class="entry">{{ row[info] }}</td>
               {% endfor %}
