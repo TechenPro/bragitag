@@ -34,7 +34,7 @@ class BragitagEngine:
         keys = self.track.keys()
         track_id = len(keys) +1
         self.track[track_id] = {"parentdir": os.path.relpath(os.path.join(filePath,os.pardir)),
-                                "path": filePath,
+                                "path": os.path.basename(filePath).split('/')[-1],
                                 "tracktitle": meta["tracktitle"].value,
                                 "artist": meta["artist"].value,
                                 "album": meta["album"].value,
@@ -87,7 +87,9 @@ class BragitagEngine:
             meta.save()
             
     def editFileName(self,Id,newName):
-        os.rename(self.track[Id]["path"],newName)
+        ext = os.path.splitext(self.track[Id]["path"])
+        os.rename(os.path.join(self.track[Id]["parentdir"],self.track[Id]["path"]),os.path.join(self.track[Id]["parentdir"],newName) + ext[1])
+        self.track[Id]["path"] = newName+ext[1]
 
     def get_child_dirs(dir_path: Path):
         dir_path = Path(dir_path)
@@ -110,3 +112,5 @@ class BragitagEngine:
                 if filename.endswith(('.mp3', '.flac')):
                     matches.append(os.path.join(root, filename))
         return matches
+        
+
