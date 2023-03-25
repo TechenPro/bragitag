@@ -90,8 +90,3 @@ class BragitagEngine:
         os.rename(os.path.join(self.track[Id]["parentdir"],self.track[Id]["path"]),os.path.join(self.track[Id]["parentdir"],newName) + ext[1])
         self.track[Id]["path"] = newName+ext[1]
 
-
-
-
-
-        
