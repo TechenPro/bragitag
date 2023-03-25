@@ -97,7 +97,10 @@ class BragitagEngine:
         for word in stringArr:
             if word in self.track[Id].keys():
                 customStr += self.track[Id][word]
-            elif word[len(word -1)] == '/'
+                
+            #elif word[len(word) -1] == '/':
+             #   customStr += "{:s}%".format(word[:len(word)-1])
+                
             else:
                 customStr += word
         return customStr

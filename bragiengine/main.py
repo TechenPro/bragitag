@@ -3,7 +3,7 @@ import os
 
 def main():
 
-    engine = be(".config")
+    engine = be(".config.example")
     root_folder = "C:/Users/19bst/Downloads/RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️"
 
     # editJson = '{"ids":[6,7,8],"changes":{"tracktitle":"HELLO WORLD", "comment":"THIS IS A COMMENT"}}'
