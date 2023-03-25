@@ -35,10 +35,10 @@ class BragitagEngine:
         """switches to new active directory, making contained music metadata files available for editing"""
         tracks = dict()
         if not os.path.isdir(dir_path):
-            return
+            return None
         self.metadata.clear()
         self.artworks.clear()
-        for path in pathutils.get_child_audio_files(self.root_dir):
+        for path in pathutils.get_child_audio_files(dir_path):
             self.load_meta_data(path, tracks)
         return tracks
 

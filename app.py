@@ -5,7 +5,7 @@ import json
 
 app = Flask(__name__)
 
-engine = BragitagEngine("C:\\Users\\mpnef\\Desktop\\HackUSU 2023\\bragiengine\\.config")
+engine = BragitagEngine("/app/.config")
 dir_tree = engine.get_dir_tree()
 dir_tree_json = json.dumps(dir_tree)
 assets = Environment(app)
@@ -42,8 +42,9 @@ def upload_file():
 @app.route("/change-dir", methods = ['POST'])
 def change_dir():
     if request.method == 'POST':
-      # ayo
-      return 'THIS SHOULD BE THE LOADED DATA'
+      subdir = request.data.decode()
+      data = engine.change_active_dir(engine.root_dir + "/" + subdir)
+      return data
 
 if __name__=="__main__":
     app.run(debug=True,host='0.0.0.0')
