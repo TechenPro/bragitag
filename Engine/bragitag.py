@@ -5,6 +5,8 @@ import json
 
 files = dict()
 
+files = dict()
+
 class bragitagEngine:
     metadata = {}
     def loadFolder(folder):
