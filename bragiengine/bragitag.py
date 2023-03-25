@@ -8,9 +8,9 @@ import bragiengine.pathutils as pathutils
 class BragitagEngine:
 
     def __init__(self, config):
-        self.metadata = {}
-        self.track = {}
-        self.art = {}
+        self.files = {}
+        self.tracks = {}
+        self.artworks = {}
         self.parse_config(config)
 
     def parse_config(self, config_file):
@@ -30,24 +30,24 @@ class BragitagEngine:
     def change_active_dir(self, dir_path):
         if not os.path.isdir(dir_path):
             return
-        self.metadata.clear()
-        self.track.clear()
-        self.art.clear()
+        self.files.clear()
+        self.tracks.clear()
+        self.artworks.clear()
         for path in pathutils.get_child_audio_files(self.root_dir):
-            self.loadMetaData(path)
+            self.load_meta_data(path)
 
-    def loadMetaData(self, filePath):
-        """Extracts relevant metadata from provided file and returns it in self.data
+    def load_meta_data(self, filepath):
+        """Extracts relevant metadata from provided file and provides it to self.tracks and self.artworks.
         Each track gets a unique ID.
-        Also stores track file in self.metadata (indexed using the same ID)"""
-        meta = music.load_file(filePath)
+        Also stores track file in self.files (indexed using the same ID)"""
+        meta = music.load_file(filepath)
 
         art_key, art_data = self.parse_artwork(meta["artwork"].first)
 
-        keys = self.track.keys()
+        keys = self.tracks.keys()
         track_id = len(keys) + 1
-        self.track[track_id] = {"parentdir": os.path.relpath(os.path.join(filePath, os.pardir)),
-                                "path": os.path.basename(filePath).split('/')[-1],
+        self.tracks[track_id] = {"parentdir": os.path.relpath(os.path.join(filepath, os.pardir)),
+                                "path": os.path.basename(filepath).split('/')[-1],
                                 "tracktitle": meta["tracktitle"].value,
                                 "artist": meta["artist"].value,
                                 "album": meta["album"].value,
@@ -70,8 +70,8 @@ class BragitagEngine:
                                 "#bitspersample": meta["#bitspersample"].value,
                                 "#samplerate": meta["#samplerate"].value}
         if art_data:
-            self.art[art_key] = art_data
-        self.metadata[track_id] = meta
+            self.artworks[art_key] = art_data
+        self.files[track_id] = meta
 
     def parse_artwork(self, art):
         """gets album artwork data and returns md5 hash as a key. """
@@ -88,38 +88,43 @@ class BragitagEngine:
 
         return md5, art_data
 
-    def editFile(self, fileInfo):
-        for Id in fileInfo["ids"]:
-            for key in fileInfo["changes"]:
-                self.editFileTags(Id, key, fileInfo["changes"][key])
-            self.metadata[Id].save()
+    def edit_file_metadata(self, file_info):
+        """identically modifies the metadata of all tracks
+        where fileInfo is a dict containing an array of ids to change
+        and a dict of metadata fields to change, and their new value
+        """
+        file_info = json.loads(file_info)
+        for track_id in file_info["ids"]:
+            for field in file_info["changes"]:
+                self.files[track_id][field] = file_info["changes"][field]
+            self.files[track_id].save()
 
-    def editFileTags(self, Id, key, value):
-        self.metadata[Id][key] = value
-
-    def editFileName(self, Id, newName):
-        ext = os.path.splitext(self.track[Id]["path"])
-        os.rename(os.path.join(self.track[Id]["parentdir"], self.track[Id]["path"]), os.path.join(
-                  self.track[Id]["parentdir"], newName) + ext[1])
-        self.track[Id]["path"] = newName+ext[1]
-        self.metadata[Id] = music.load_file(os.path.join(self.track[Id]["parentdir"], newName) + ext[1])
-        
-    
+    def edit_filename(self, track_id, new_name):
+        """changes a tracks filename"""
+        ext = os.path.splitext(self.tracks[track_id]["path"])
+        os.rename(os.path.join(self.tracks[track_id]["parentdir"], self.tracks[track_id]["path"]), os.path.join(
+                  self.tracks[track_id]["parentdir"], new_name) + ext[1])
+        self.tracks[track_id]["path"] = new_name+ext[1]
+        self.files[track_id] = music.load_file(os.path.join(self.track[track_id]["parentdir"], new_name) + ext[1])
 
 
-    def stringCustomFormat(self, Id, string):
+    def resolve_metadata_wildcards(self, track_id, string):
+        """if `string` contains metadata fields surrounded by '%', replace it with the provided track's metadata values
+        EX: `The artist is: %artist%` -> `The artists is: The Beatles"""
         customStr = ""
-        stringArr = string.split('%')
-        for word in stringArr:
-            if word in self.track[Id].keys():
-                customStr += self.track[Id][word]
+        string_arr = string.split('%')
+        for word in string_arr:
+            if word in self.track[track_id].keys():
+                customStr += self.track[track_id][word]
             
             elif word == "":
                 continue
-                
+
+             #escape char   
             elif word[-1] == '\\':
-                customStr += "{:s}%".format(word[:len(word)-1])
+                resolved_str += "{:s}%".format(word[:len(word)-1])
                 
             else:
-                customStr += word
-        return customStr
+                resolved_str += word
+
+        return resolved_str

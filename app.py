@@ -4,7 +4,7 @@ from bragiengine.bragitag import BragitagEngine
 
 app = Flask(__name__)
 
-engine = BragitagEngine("INSERT CONFIG PATH HERE")
+engine = BragitagEngine("bragiengine/.config")
 assets = Environment(app)
 assets.url = app.static_url_path
 scss = Bundle('styles/index.scss', filters='libsass', output='all.css')
