@@ -39,6 +39,16 @@ class bragitagEngine:
         
         self.metadata[str(i)] = meta
     
+    def parse_artwork(art):
+        if art:
+            md5 = re.fullmatch(".*([a-z0-9]{32})", str(art)).group(1)
+            art_data = {"type": art.mime,
+                        "width": art.width,
+                        "height": art.height,
+                        "data": art.data,
+                        }
+        return (md5, art_data)
+
     def editFile(self,fileInfo):
         fileInfo = json.loads(fileInfo)
         meta = bragitagEngine.metadata
@@ -47,10 +57,16 @@ class bragitagEngine:
 
     
 def main():
-    tracks = bragitagEngine.loadFolder("C:/Users/19bst/Downloads/RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️")
+    root_folder = 'C:\\Users\\arire\\OneDrive - University of Utah\\_Projects\HackUSU23\\TestSongs\\\RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️'
+
+    tracks = loadFolder(root_folder)
     bragitagEngine.editFile(tracks)
     #print(tracks[0]["15"]["tracktitle"])
-    #print(tracks)
+    # print(tracks)
 
 if __name__ == "__main__":
     main()
+
+
+
+        
