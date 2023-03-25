@@ -466,9 +466,9 @@ html {
             background-color: #2a2a2a; }
             .s-main .panel.table .info .data-row:nth-child(even) .entry::-webkit-scrollbar-thumb {
               background-color: #2a2a2a; }
-          .s-main .panel.table .info .data-row:hover {
+          .s-main .panel.table .info .data-row:hover, .s-main .panel.table .info .data-row.selected {
             background: rgba(0, 0, 0, 0.6); }
-            .s-main .panel.table .info .data-row:hover .entry::-webkit-scrollbar-thumb {
+            .s-main .panel.table .info .data-row:hover .entry::-webkit-scrollbar-thumb, .s-main .panel.table .info .data-row.selected .entry::-webkit-scrollbar-thumb {
               background-color: rgba(0, 0, 0, 0.6); }
           .s-main .panel.table .info .data-row .entry {
             padding: 12px 8px;
