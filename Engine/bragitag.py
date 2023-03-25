@@ -3,48 +3,43 @@ import os
 import re
 import json
 
-class bragitagEngine:
-    metadata = {}
-    def loadFolder(folder):
-        track = {}
-        art = {}
-        tracks = [track,art]
-        
-        
-        for i,filePath in enumerate(os.listdir(folder),start = 1):
-            ext = re.fullmatch(".+\.(aac|aiff|dsf|flac|m4a|mp3|ogg|opus|wav|wv)", filePath.lower())
-            if os.path.isdir(filePath):
-                bragitagEngine.loadFolder(os.path.join(folder,filePath))
-            elif ext:
-                meta = music.load_file(os.path.join(folder,filePath))
-                track[str(i)] = {"tracktitle": meta["tracktitle"].value,
-                                 "artist": meta["artist"].value,
-                                 "album": meta["album"].value,
-                                 "albumartist": meta["albumartist"].value,
-                                 "composer": meta["composer"].value,
-                                 "tracknumber": meta["tracknumber"].value,
-                                 "totaltracks": meta["totaltracks"].value,
-                                 "discnumber": meta["discnumber"].value,
-                                 "totaldiscs": meta["totaldiscs"].value,
-                                 "genre": meta["genre"].value,
-                                 "year": meta["genre"].value,
-                                 "isrc": meta["isrc"].value,
-                                 "comment": meta["comment"].value,
-                                 "compilation": meta["compilation"].value,
-                                 "#bitrate": meta["#bitrate"].value,
-                                 "#codec": meta["#codec"].value,
-                                 "#length": meta["#length"].value,
-                                 "#channels": meta["#channels"].value,
-                                 "#bitspersample": meta["#bitspersample"].value,
-                                 "#samplerate": meta["#samplerate"].value}
-                
-                bragitagEngine.metadata[str(i)] = meta
-            
-        return json.dumps(tracks)
 
+class bragitagEngine:
     
+    def __init__(self):
+        self.metadata = {}
+        self.track = {}
+        self.art = {}
+        self.data = [self.track,self.art]
+        
+    def loadMetaData(self, filePath):
+        meta = music.load_file(os.path.join(filePath))
+        self.track[str(i)] = {"parentdir": os.path.relpath(os.path.join(filePath,os.pardir)),
+                              "path": filePath,
+                              "tracktitle": meta["tracktitle"].value,
+                              "artist": meta["artist"].value,
+                              "album": meta["album"].value,
+                              "albumartist": meta["albumartist"].value,
+                              "composer": meta["composer"].value,
+                              "tracknumber": meta["tracknumber"].value,
+                              "totaltracks": meta["totaltracks"].value,
+                              "discnumber": meta["discnumber"].value,
+                              "totaldiscs": meta["totaldiscs"].value,
+                              "genre": meta["genre"].value,
+                              "year": meta["genre"].value,
+                              "isrc": meta["isrc"].value,
+                              "comment": meta["comment"].value,
+                              "compilation": meta["compilation"].value,
+                              "#bitrate": meta["#bitrate"].value,
+                              "#codec": meta["#codec"].value,
+                              "#length": meta["#length"].value,
+                              "#channels": meta["#channels"].value,
+                              "#bitspersample": meta["#bitspersample"].value,
+                              "#samplerate": meta["#samplerate"].value}
+        
+        self.metadata[str(i)] = meta
     
-    def editFile(fileInfo):
+    def editFile(self,fileInfo):
         fileInfo = json.loads(fileInfo)
         meta = bragitagEngine.metadata
         for Id in fileInfo["ids"]:
