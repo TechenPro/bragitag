@@ -212,6 +212,15 @@ html {
 
                 .header {
                     width: 150px;
+                    padding: 12px;
+
+                    &:not(:last-child) {
+                        border-right: 2px solid $tertiaryBg;
+                    }
+
+                    &:not(:first-child) {
+                        border-left: 2px solid $tertiaryBg;
+                    }
                 }
 
                 .data-row {

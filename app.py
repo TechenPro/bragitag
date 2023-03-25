@@ -6,7 +6,7 @@ import json
 app = Flask(__name__)
 
 engine = BragitagEngine("C:\\Users\\mpnef\\Desktop\\HackUSU 2023\\bragiengine\\.config")
-dir_tree = engine.load_dir_tree()
+dir_tree = engine.get_dir_tree()
 dir_tree_json = json.dumps(dir_tree)
 assets = Environment(app)
 assets.url = app.static_url_path

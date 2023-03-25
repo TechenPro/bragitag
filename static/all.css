@@ -445,7 +445,12 @@ html {
       .s-main .panel.table .info {
         width: max-content; }
         .s-main .panel.table .info .header {
-          width: 150px; }
+          width: 150px;
+          padding: 12px; }
+          .s-main .panel.table .info .header:not(:last-child) {
+            border-right: 2px solid #2a2a2a; }
+          .s-main .panel.table .info .header:not(:first-child) {
+            border-left: 2px solid #2a2a2a; }
         .s-main .panel.table .info .data-row:nth-child(odd) {
           background-color: #333333; }
         .s-main .panel.table .info .data-row:nth-child(even) {
