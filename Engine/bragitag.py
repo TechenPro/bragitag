@@ -3,39 +3,12 @@ import os
 import re
 import json
 
-def loadFolder(folder):
-    track = {}
-    art = {}
-    tracks = [track,art]
-    
-    
-    for i,filePath in enumerate(os.listdir(folder),start = 1):
-        ext = re.fullmatch(".+\.(aac|aiff|dsf|flac|m4a|mp3|ogg|opus|wav|wv)", filePath.lower())
-        if os.path.isdir(filePath):
-            loadFolder(os.path.join(folder,filePath))
-        elif ext:
-           meta = music.load_file(os.path.join(folder,filePath))
-           track[str(i)] = {"tracktitle": meta["tracktitle"].value,
-                          "artist": meta["artist"].value,
-                          "album": meta["album"].value,
-                          "albumartist": meta["albumartist"].value,
-                          "composer": meta["composer"].value,
-                          "tracknumber": meta["tracknumber"].value,
-                          "totaltracks": meta["totaltracks"].value,
-                          "discnumber": meta["discnumber"].value,
-                          "totaldiscs": meta["totaldiscs"].value,
-                          "genre": meta["genre"].value,
-                          "year": meta["genre"].value,
-                          "isrc": meta["isrc"].value,
-                          "comment": meta["comment"].value,
-                          "compilation": meta["compilation"].value,
-                          "#bitrate": meta["#bitrate"].value,
-                          "#codec": meta["#codec"].value,
-                          "#length": meta["#length"].value,
-                          "#channels": meta["#channels"].value,
-                          "#bitspersample": meta["#bitspersample"].value,
-                          "#samplerate": meta["#samplerate"].value}
-                          
+class bragitagEngine:
+    metadata = {}
+    def loadFolder(folder):
+        track = {}
+        art = {}
+        tracks = [track,art]
         
         
         for i,filePath in enumerate(os.listdir(folder),start = 1):
