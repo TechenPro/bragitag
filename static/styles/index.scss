@@ -1,0 +1,55 @@
+@import 'normalize.scss';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+// Nav
+.s-nav {
+    background-color: #232323;
+    color: white;
+    padding: 20px;
+
+    .name {
+        margin-top: 0;
+    }
+
+    .ribbon {
+        display: flex;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        &.bottom {
+            color: #abab30;
+        }
+
+        &.top {
+            .item {
+                &:not(:last-child) {
+                    margin-right: 24px;
+                }
+            }
+        }
+    }
+}
+
+// Main
+.s-main {
+    background-color: #3e3e3e;
+    color: #f9f9f9;
+
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+
+    .panel {
+        margin: 0 16px 48px;
+
+        &.edit {
+            padding-top: 48px;
+        }
+
+        &.table {}
+    }
+}
