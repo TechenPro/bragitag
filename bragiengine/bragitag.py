@@ -5,6 +5,7 @@ import bragiengine.pathutils as pathutils
 import base64
 
 
+
 class BragitagEngine:
     """BragitagEngine
     Description: Class for modifying audio file metadata and interfacing with the webapp
@@ -15,7 +16,10 @@ class BragitagEngine:
         """initialize and configure engine"""
         self.metadata = {}
         self.artworks = {}
-        self.parse_config(config)
+        if not config:
+            self.root_dir = "/library"
+        else:
+            self.parse_config(config)
 
     def parse_config(self, config_file):
         """initialize variables from the config file"""
@@ -44,7 +48,7 @@ class BragitagEngine:
         return { "tracks": tracks, "artworks": self.artworks }
 
     def load_meta_data(self, filepath, tracks):
-        """Extracts relevant metadata from provided file and provides it to self.tracks and self.artworks.
+        """Extracts relevant metadata from provided file and provides it to tracks and self.artworks.
         Each track gets a unique ID.
         Also stores track file in self.metadata (indexed using the same ID)"""
         meta = music.load_file(filepath)
