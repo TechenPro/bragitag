@@ -5,7 +5,7 @@ import json
 
 app = Flask(__name__)
 
-engine = BragitagEngine("/app/.config")
+engine = BragitagEngine(".config")
 dir_tree = engine.get_dir_tree()
 dir_tree_json = json.dumps(dir_tree)
 assets = Environment(app)
@@ -37,9 +37,10 @@ def hello_world():
 def upload_file():
     if request.method == 'POST':
         data = json.loads(request.form["json"])
-        if "file" in data:
-            f = request.files['file']
+        if "file" in data["changes"]:
+            f = request.files['file'].read()
             data["changes"]["artwork"] = f
+            data["changes"].pop("file")
         result = engine.edit_file_metadata(data)
 
         return "done"
