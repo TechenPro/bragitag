@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request
 from flask_assets import Environment, Bundle
+from bragiengine.bragitag import BragitagEngine
 
 app = Flask(__name__)
 
+engine = BragitagEngine("INSERT CONFIG PATH HERE")
 assets = Environment(app)
 assets.url = app.static_url_path
 scss = Bundle('styles/index.scss', filters='libsass', output='all.css')

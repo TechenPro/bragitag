@@ -2,4 +2,3 @@ __pycache__
 static/.webassets-cache
 bragiengine/.config
 bragiengine/main.py
-bragiengine/.config
