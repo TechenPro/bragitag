@@ -56,29 +56,29 @@ class BragitagEngine:
 
         keys = tracks.keys()
         track_id = len(keys) + 1
-        tracks[track_id] = {"parentdir": os.path.relpath(os.path.join(filepath, os.pardir)),
-                                "path": os.path.basename(filepath).split('/')[-1],
-                                "tracktitle": meta["tracktitle"].value,
-                                "artist": meta["artist"].value,
-                                "album": meta["album"].value,
-                                "albumartist": meta["albumartist"].value,
-                                "artwork": art_key,
-                                "composer": meta["composer"].value,
-                                "tracknumber": meta["tracknumber"].value,
-                                "totaltracks": meta["totaltracks"].value,
-                                "discnumber": meta["discnumber"].value,
-                                "totaldiscs": meta["totaldiscs"].value,
-                                "genre": meta["genre"].value,
-                                "year": meta["genre"].value,
-                                "isrc": meta["isrc"].value,
-                                "comment": meta["comment"].value,
-                                "compilation": meta["compilation"].value,
-                                "#bitrate": meta["#bitrate"].value,
-                                "#codec": meta["#codec"].value,
-                                "#length": meta["#length"].value,
-                                "#channels": meta["#channels"].value,
-                                "#bitspersample": meta["#bitspersample"].value,
-                                "#samplerate": meta["#samplerate"].value}
+        tracks[track_id] = {"parentdir": os.path.abspath(os.path.join(filepath, os.pardir)),
+                            "path": os.path.basename(filepath).split('/')[-1],
+                            "tracktitle": meta["tracktitle"].value,
+                            "artist": meta["artist"].value,
+                            "album": meta["album"].value,
+                            "albumartist": meta["albumartist"].value,
+                            "artwork": art_key,
+                            "composer": meta["composer"].value,
+                            "tracknumber": meta["tracknumber"].value,
+                            "totaltracks": meta["totaltracks"].value,
+                            "discnumber": meta["discnumber"].value,
+                            "totaldiscs": meta["totaldiscs"].value,
+                            "genre": meta["genre"].value,
+                            "year": meta["year"].value,
+                            "isrc": meta["isrc"].value,
+                            "comment": meta["comment"].value,
+                            "compilation": meta["compilation"].value,
+                            "#bitrate": meta["#bitrate"].value,
+                            "#codec": meta["#codec"].value,
+                            "#length": meta["#length"].value,
+                            "#channels": meta["#channels"].value,
+                            "#bitspersample": meta["#bitspersample"].value,
+                            "#samplerate": meta["#samplerate"].value}
         if art_data:
             self.artworks[art_key] = art_data
         self.metadata[track_id] = meta
@@ -110,12 +110,20 @@ class BragitagEngine:
 
         
 
+<<<<<<< Updated upstream
     def edit_filename(self, track_id, new_name):
         """changes a track's filename"""
         ext = os.path.splitext(self.metadata[track_id].filename)
         parent_path = os.path.abspath(os.path.join(self.metadata[track_id].filename, os.pardir))
         os.rename(self.metadata[track_id].filename, os.path.join(parent_path, new_name) + ext[1])
         self.metadata[track_id] = music.load_file(os.path.join(parent_path, new_name) + ext[1])
+=======
+    def edit_file_name(self, Id, newName):
+        ext = os.path.splitext(self.metadata[Id].filename)
+        parentPath = os.path.abspath(os.path.join(self.metadata[Id].filename, os.pardir))
+        os.rename(self.metadata[Id].filename, os.path.join(parentPath, newName) + ext[1])
+        self.metadata[Id] = music.load_file(os.path.join(parentPath, newName) + ext[1])
+>>>>>>> Stashed changes
 
 
     def resolve_metadata_macros(self, track_id, string):
