@@ -37,7 +37,7 @@ def hello_world():
 def upload_file():
     if request.method == 'POST':
         data = json.loads(request.form["json"])
-        if data["file"]:
+        if "file" in data:
             f = request.files['file']
             data["changes"]["artwork"] = f
         result = engine.edit_file_metadata(data)
