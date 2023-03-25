@@ -1,7 +1,6 @@
 import music_tag as music
 import os
 import re
-# import pathutils
 import bragiengine.pathutils as pathutils
 
 
@@ -103,11 +102,12 @@ class BragitagEngine:
 
         
 
-    def editFileName(self, Id, newName):
-        ext = os.path.splitext(self.metadata[Id].filename)
-        parentPath = os.path.abspath(os.path.join(self.metadata[Id].filename, os.pardir))
-        os.rename(self.metadata[Id].filename, os.path.join(parentPath, newName) + ext[1])
-        self.metadata[Id] = music.load_file(os.path.join(parentPath, newName) + ext[1])
+    def edit_filename(self, track_id, new_name):
+        """changes a track's filename"""
+        ext = os.path.splitext(self.metadata[track_id].filename)
+        parent_path = os.path.abspath(os.path.join(self.metadata[track_id].filename, os.pardir))
+        os.rename(self.metadata[track_id].filename, os.path.join(parent_path, new_name) + ext[1])
+        self.metadata[track_id] = music.load_file(os.path.join(parent_path, new_name) + ext[1])
 
 
     def resolve_metadata_macros(self, track_id, string):
