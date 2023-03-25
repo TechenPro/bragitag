@@ -1,24 +1,20 @@
-from bragitag import BragitagEngine
+from bragitag import BragitagEngine as be
 import os
 
-engine = BragitagEngine("bragiengine/.config")
+def main():
 
-filename = '01. Everything In Its Right Place.flac'
-nopicture = 'Hymns_004_TruthEternal_eng.mp3'
+    engine = be(".config")
+    root_folder = "C:/Users/19bst/Downloads/RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️"
 
-editJson = '{"ids":[6,7,8],"changes":{"tracktitle":"HELLO WORLD", "comment":"THIS IS A COMMENT",}}'
-for filename in os.listdir(engine.root_dir):
-    engine.loadMetaData(os.path.join(engine.root_dir, filename))
-# engine.editFile(editJson)
-# with open("image.txt", "w") as artwork:
-#     artwork.write(str(engine.metadata[6]["artwork"].first.data))
-
-
-#print(engine.data)
-
-
-# BragitagEngine.editFile(tracks)
-
-#print(tracks[0]["15"]["tracktitle"])
-# print(tracks)
+    # editJson = '{"ids":[6,7,8],"changes":{"tracktitle":"HELLO WORLD", "comment":"THIS IS A COMMENT"}}'
+    for filename in os.listdir(root_folder):
+        engine.loadMetaData(os.path.join(root_folder, filename))
+    # #engine.editFileJson(editJson)
+    # engine.editFileName(4,"4 3")
+    # engine.editFileTags(4, "album", "New Artist")
+    string = "%album% - %tracktitle% - /%hello"
+    str1 = engine.stringCustomize(3,string)
+    print(str1)
+if __name__ == "__main__":
+    main()
 
