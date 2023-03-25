@@ -1,7 +1,12 @@
+"""pathutils.py
+Description: Utility functions for listing files and subdirectories
+Author: Turin Briggs
+Date: 03/25/2023"""
 import os
 from pathlib import Path
 
 def get_child_dirs(dir_path: Path):
+    """recursively lists all directories and subdirectories"""
     dir_path = Path(dir_path)
     children = {}
 
@@ -16,6 +21,7 @@ def get_child_dirs(dir_path: Path):
     return children
 
 def get_child_audio_files(source):
+    """lists all valid audio files in source directory"""
     matches = []
     for root, dirnames, filenames in os.walk(source):
         for filename in filenames:
