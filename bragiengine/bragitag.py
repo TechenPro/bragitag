@@ -1,7 +1,6 @@
 import music_tag as music
 import os
 import re
-import pathutils
 import bragiengine.pathutils as pathutils
 
 
@@ -9,7 +8,6 @@ class BragitagEngine:
 
     def __init__(self, config):
         self.metadata = {}
-        self.track = {}
         self.art = {}
         self.parse_config(config)
 
@@ -30,13 +28,13 @@ class BragitagEngine:
     def change_active_dir(self, dir_path):
         if not os.path.isdir(dir_path):
             return
+        track = {}
         self.metadata.clear()
-        self.track.clear()
         self.art.clear()
         for path in pathutils.get_child_audio_files(self.root_dir):
-            self.loadMetaData(path)
+            self.loadMetaData(track,path)
 
-    def loadMetaData(self, filePath):
+    def loadMetaData(self, track, filePath):
         """Extracts relevant metadata from provided file and returns it in self.data
         Each track gets a unique ID.
         Also stores track file in self.metadata (indexed using the same ID)"""
@@ -46,7 +44,7 @@ class BragitagEngine:
 
         keys = self.track.keys()
         track_id = len(keys) + 1
-        self.track[track_id] = {"parentdir": os.path.relpath(os.path.join(filePath, os.pardir)),
+        track[track_id] = {"parentdir": os.path.abspath(os.path.join(filePath, os.pardir)),
                                 "path": os.path.basename(filePath).split('/')[-1],
                                 "tracktitle": meta["tracktitle"].value,
                                 "artist": meta["artist"].value,
@@ -98,12 +96,10 @@ class BragitagEngine:
         self.metadata[Id][key] = value
 
     def editFileName(self, Id, newName):
-        ext = os.path.splitext(self.track[Id]["path"])
-        os.rename(os.path.join(self.track[Id]["parentdir"], self.track[Id]["path"]), os.path.join(
-                  self.track[Id]["parentdir"], newName) + ext[1])
-        self.track[Id]["path"] = newName+ext[1]
-        self.metadata[Id] = music.load_file(os.path.join(self.track[Id]["parentdir"], newName) + ext[1])
-        
+        ext = os.path.splitext(self.metadata[Id].filename)
+        parentPath = os.path.abspath(os.path.join(self.metadata[Id].filename, os.pardir))
+        os.rename(self.metadata[Id].filename, os.path.join(parentPath, newName) + ext[1])
+        self.metadata[Id] = music.load_file(os.path.join(self.track[Id]["parentdir"], newName) + ext[1])        
     
 
 
