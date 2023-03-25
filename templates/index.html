@@ -17,9 +17,9 @@
           
         </ul> -->
         <ul class="ribbon bottom">
-          <li class="item">File</li>
-          <li class="item">Tools (was convert)</li>
-          <li class="item">Save</li>
+          <li class="item nav-file" id="nav-file">File</li>
+          <li class="item nav-tools" id="nav-tools">Tools (was convert)</li>
+          <li class="item nav-save" id="nav-save">Save</li>
         </ul>
       </nav>
     </header>
@@ -104,6 +104,16 @@
       {% assets "js_all" %}
       <script src="{{ASSET_URL}}"></script>
       {% endassets %}
+      <dialog class="dir-modal" id="dir-modal">
+        <div class="contents" id="contents">
+          <h1 id="dir-path">/</h1>
+          <div id="dir_tree_json" style="display: none; visibility: hidden;" data-json="{{ dir_tree_json }}"></div>
+          <div id="dir_holder" class="dir-holder">
+
+          </div>
+          <button class="use-dir" id="dir-submit">Use Current Directory</button>
+        </div>
+      </dialog>
     </footer>
   </body>
 </html>

@@ -2,7 +2,7 @@ import music_tag as music
 import os
 import re
 import json
-import pathutils
+import bragiengine.pathutils as pathutils
 
 class BragitagEngine:
 
@@ -98,7 +98,8 @@ class BragitagEngine:
         for word in stringArr:
             if word in self.track[Id].keys():
                 customStr += self.track[Id][word]
-            elif word[len(word -1)] == '/'
+            elif word[len(word -1)] == '/':
+                pass
             else:
                 customStr += word
         return customStr

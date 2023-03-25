@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request
 from flask_assets import Environment, Bundle
 from bragiengine.bragitag import BragitagEngine
+import json
 
 app = Flask(__name__)
 
-engine = BragitagEngine("INSERT CONFIG PATH HERE")
+engine = BragitagEngine("C:\\Users\\mpnef\\Desktop\\HackUSU 2023\\bragiengine\\.config")
+dir_tree = engine.load_dir_tree()
+dir_tree_json = json.dumps(dir_tree)
 assets = Environment(app)
 assets.url = app.static_url_path
 scss = Bundle('styles/index.scss', filters='libsass', output='all.css')
@@ -26,15 +29,21 @@ for i in range(0, 30):
 
 @app.route("/")
 def hello_world():
-    return render_template('index.html', colHeads=colHeads, rows=rows)
+    return render_template('index.html', colHeads=colHeads, rows=rows, dir_tree=dir_tree, dir_tree_json=dir_tree_json)
 
-@app.route("/send-info", methods = ['GET', 'POST'])
+@app.route("/send-info", methods = ['POST'])
 def upload_file():
     if request.method == 'POST':
       f = request.files['file']
       print(type(f))
     #   f.save(secure_filename(f.filename))
       return 'file uploaded successfully'
+    
+@app.route("/change-dir", methods = ['POST'])
+def change_dir():
+    if request.method == 'POST':
+      # ayo
+      return 'THIS SHOULD BE THE LOADED DATA'
 
 if __name__=="__main__":
     app.run(debug=True,host='0.0.0.0')
