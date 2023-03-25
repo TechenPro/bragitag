@@ -320,8 +320,7 @@ html {
 .s-nav {
   background-color: #232323;
   color: white;
-  padding: 20px;
-  height: 116.64px; }
+  padding: 20px; }
   .s-nav .name {
     margin-top: 0; }
   .s-nav .ribbon {
@@ -331,6 +330,8 @@ html {
     padding: 0; }
     .s-nav .ribbon.bottom {
       color: #abab30; }
+      .s-nav .ribbon.bottom .item:not(:last-child) {
+        margin-right: 24px; }
     .s-nav .ribbon.top .item:not(:last-child) {
       margin-right: 24px; }
 
@@ -338,12 +339,23 @@ html {
   background-color: #3e3e3e;
   color: #f9f9f9;
   display: grid;
-  grid-template-columns: 2fr 5fr;
-  height: 100%; }
+  grid-template-columns: 2fr 5fr; }
   .s-main .panel {
-    margin: 0 16px 48px;
-    height: 100%;
+    margin: 0 6px 0;
+    padding: 0 10px 48px;
+    height: calc(100vh - 116.64px);
     overflow-y: auto; }
+    .s-main .panel:hover::-webkit-scrollbar-thumb {
+      background-color: #ccc; }
+    .s-main .panel::-webkit-scrollbar {
+      width: 3px !important;
+      height: 3px !important; }
+      .s-main .panel::-webkit-scrollbar-thumb {
+        background-color: #3e3e3e;
+        border-radius: 0.6rem;
+        transition: background-color 300ms; }
+      .s-main .panel::-webkit-scrollbar-track {
+        background: transparent; }
     .s-main .panel.edit {
       padding-top: 48px; }
       .s-main .panel.edit .form {
@@ -365,7 +377,8 @@ html {
           .s-main .panel.edit .form .group .field {
             background-color: #dddddd;
             border: none;
-            transition: background 300ms; }
+            transition: background 300ms;
+            padding: 6px 10px; }
             .s-main .panel.edit .form .group .field:focus, .s-main .panel.edit .form .group .field:hover {
               outline: none;
               background-color: white; }
@@ -410,8 +423,24 @@ html {
                 padding: 10px 16px;
                 border-radius: 25px;
                 background-color: #abab30;
-                color: #3e3e3e;
-                cursor: pointer; }
+                color: #3e3e3e; }
+        .s-main .panel.edit .form .submit {
+          font-weight: 600;
+          padding: 10px 16px;
+          border-radius: 25px;
+          background-color: #abab30;
+          color: #3e3e3e;
+          border: none;
+          flex-basis: 100%;
+          transition: color 300ms;
+          margin-top: 16px; }
+          .s-main .panel.edit .form .submit:hover {
+            color: #dddddd; }
     .s-main .panel.table {
-      height: 100%;
-      overflow: hidden; }
+      margin-right: 0;
+      padding-right: 0;
+      overflow-x: scroll; }
+      .s-main .panel.table .info {
+        width: max-content; }
+        .s-main .panel.table .info .header {
+          width: 150px; }

@@ -76,19 +76,19 @@
             <label class="label" for="comment">Comment</label>
             <input class="field" type="text" name="comment" id="comment">
           </div>
+          <input type="submit" value="Save Changes" class="submit">
         </form>
       </section>
       <section class="panel table">
-        <table>
-          <tr>
+        <table class="info">
             {% for colHead in colHeads %}
-            <th>{{ colHead }}</th>
+            <th class="header">{{ colHead }}</th>
             {% endfor %}
           </tr>
           {% for row in rows %}
           <tr>
             {% for info in row %}
-            <td>{{ row[info] }}</td>
+            <td class="entry">{{ row[info] }}</td>
             {% endfor %}
           </tr>
           {% endfor %}

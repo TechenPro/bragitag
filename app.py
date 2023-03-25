@@ -11,7 +11,7 @@ assets.register('scss_all', scss)
 js = Bundle('js/main.js', filters='jsmin', output='all.js')
 assets.register('js_all', js)
 
-colHeads = ('File Name', 'Path', 'Tag', 'Title', 'Artist', 'Album Artist', 'Album', 'Track', 'Disc Number', 'Year',  'Genre', 'Comment', 'Codec', 'Bitrate', 'Frequency', 'Length', 'Modified')
+colHeads = ['File Name', 'Path', 'Tag', 'Title', 'Artist', 'Album Artist', 'Album', 'Track', 'Disc Number', 'Year',  'Genre', 'Comment', 'Codec', 'Bitrate', 'Frequency', 'Length', 'Modified']
 rows = []
 
 k = 0
