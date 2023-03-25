@@ -1,13 +1,14 @@
 import music_tag as music
 import os
 import re
-import pathutils
+# import pathutils
 import bragiengine.pathutils as pathutils
 
 
 class BragitagEngine:
 
     def __init__(self, config):
+        """initialize and configure engine"""
         self.files = {}
         self.tracks = {}
         self.artworks = {}
@@ -24,10 +25,12 @@ class BragitagEngine:
             if not self.root_dir:
                 self.root_dir = "/library"
 
-    def load_dir_tree(self):
+    def get_dir_tree(self):
+        """get all subdirectories of root"""
         return pathutils.get_child_dirs(self.root_dir)
 
     def change_active_dir(self, dir_path):
+        """switches to new active directory, making contained music metadata files available for editing"""
         if not os.path.isdir(dir_path):
             return
         self.files.clear()
