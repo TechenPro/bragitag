@@ -36,11 +36,12 @@ def hello_world():
 @app.route("/send-info", methods=['POST'])
 def upload_file():
     if request.method == 'POST':
-        # data = json.loads(request.form["json"])
-        # if "file" in data:
-        #     f = request.files['file']
-        #     data["changes"]["artwork"] = f
-        # result = engine.edit_file_metadata(data)
+        data = json.loads(request.form["json"])
+        if "file" in data["changes"]:
+            f = request.files['file'].read()
+            data["changes"]["artwork"] = f
+            data["changes"].pop("file")
+        result = engine.edit_file_metadata(data)
 
         return "done"
 

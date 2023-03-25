@@ -106,8 +106,8 @@ class BragitagEngine:
         """
         for track_id in file_info["ids"]:
             for field in file_info["changes"]:
-                self.metadata[track_id][field] = file_info["changes"][field]
-            self.metadata[track_id].save()
+                self.metadata[int(track_id)][field] = file_info["changes"][field]
+            self.metadata[int(track_id)].save()
 
     def edit_filename(self, track_id, new_name):
         """changes a track's filename"""
