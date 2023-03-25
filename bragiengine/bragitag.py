@@ -14,7 +14,7 @@ class BragitagEngine:
         self.parse_config(config)
 
     def parse_config(self, config_file):
-
+        """initialize variables from the config file"""
         with open(config_file, encoding="utf-8") as config:
             configuration = dict((key, value) for key, value in
                                  (setting.split(": ") for setting in config.read().split("\n")))
@@ -28,6 +28,9 @@ class BragitagEngine:
         return pathutils.get_child_dirs(self.root_dir)
 
     def loadMetaData(self, filePath):
+        """Extracts relevant metadata from provided file and returns it in self.data
+        Each track gets a unique ID.
+        Also stores track file in self.metadata (indexed using the same ID)"""
         meta = music.load_file(os.path.join(filePath))
 
         art_key, art_data = self.parse_artwork(meta["artwork"].first)
@@ -63,6 +66,7 @@ class BragitagEngine:
         self.metadata[track_id] = meta
 
     def parse_artwork(self, art):
+        """gets album artwork data and returns md5 hash as a key. """
         if art:
             md5 = re.fullmatch(".*([a-z0-9]{32})", str(art)).group(1)
             art_data = {"type": art.mime,
@@ -74,7 +78,7 @@ class BragitagEngine:
             md5 = None
             art_data = None
 
-        return (md5, art_data)
+        return md5, art_data
 
     def editFileJson(self, fileInfo):
         fileInfo = json.loads(fileInfo)
