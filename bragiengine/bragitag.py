@@ -2,7 +2,7 @@ import music_tag as music
 import os
 import re
 import json
-import pathutils
+import bragiengine.pathutils as pathutils
 
 
 class BragitagEngine:
