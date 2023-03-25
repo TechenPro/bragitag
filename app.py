@@ -5,7 +5,7 @@ import json
 
 app = Flask(__name__)
 
-engine = BragitagEngine("/app/.config")
+engine = BragitagEngine("C:\\Users\\mpnef\\Desktop\\HackUSU 2023\\bragiengine\\.config")
 dir_tree = engine.get_dir_tree()
 dir_tree_json = json.dumps(dir_tree)
 assets = Environment(app)
@@ -16,20 +16,19 @@ assets.register('scss_all', scss)
 js = Bundle('js/main.js', filters='jsmin', output='all.js')
 assets.register('js_all', js)
 
-colHeads = ['File Name', 'Path', 'Tag', 'Title', 'Artist', 'Album Artist', 'Album', 'Track', 'Disc Number', 'Year',  'Genre', 'Comment', 'Codec', 'Bitrate', 'Frequency', 'Length', 'Modified']
+colHeads = ['File Name', 'Parent Dir', 'Title', 'Artist', 'Album Artist', 'Composer', 'Album', 'Track', 'Disc Number', 'Year',  'Genre', 'Comment', 'Codec', 'Bitrate', 'Frequency', 'Length']
+colHeadsJSON = json.dumps(colHeads)
 rows = []
 
-k = 0
 for i in range(0, 30):
     newRow = {}
     for colHead in colHeads:
-        newRow[colHead] = k
-        k+=1
+        newRow[colHead] = ""
     rows.append(newRow)
 
 @app.route("/")
 def hello_world():
-    return render_template('index.html', colHeads=colHeads, rows=rows, dir_tree=dir_tree, dir_tree_json=dir_tree_json)
+    return render_template('index.html', colHeads=colHeads, colHeadsJSON=colHeadsJSON, rows=rows, dir_tree=dir_tree, dir_tree_json=dir_tree_json)
 
 @app.route("/send-info", methods = ['POST'])
 def upload_file():

@@ -1,4 +1,5 @@
-let previewEl,
+let formEl,
+    previewEl,
     thElm,
     startOffset,
     dirTree,
@@ -10,19 +11,55 @@ let dirI = 0;
 let currSelected = null;
 let currUL = null;
 
+let cleanHeaders = [];
+
 window.addEventListener("DOMContentLoaded", () => {
     const fileEl = document.querySelector("#file");
-    const formEl = document.querySelector("#form");
     const dirDialogEl = document.querySelector("#dir-modal");
     const navFileEl = document.querySelector("#nav-file");
     const dirTreeJsonEl = document.querySelector("#dir_tree_json");
+    const tableBody = document.querySelector("#table-body");
+    const tableHeadersJSON = document.querySelector("#colHeadsJSON");
+    const tableHeaders = JSON.parse(tableHeadersJSON.getAttribute("data-json"));
+    formEl = document.querySelector("#form");
     previewEl = document.querySelector("#preview");
     dirHolder = document.querySelector("#dir_holder");
     dirSubmit = document.querySelector("#dir-submit");
     dirPath = document.querySelector("#dir-path");
-    dirTree = JSON.parse(dirTreeJsonEl.getAttribute("data-json"));
 
+    dirTree = JSON.parse(dirTreeJsonEl.getAttribute("data-json"));
     iterateDir(dirTree, "", null);
+
+    tableHeaders.forEach(header => {
+        let cleanHeader = header.toLowerCase();
+        cleanHeader = cleanHeader.replace(" ", "");
+
+        switch (cleanHeader) {
+            case "filename":
+                cleanHeader = "path"
+                break;
+            case "track":
+                cleanHeader = "tracknumber"
+                break;
+            case "title":
+                cleanHeader = "tracktitle"
+                break;
+            case "codec":
+                cleanHeader = "#codec"
+                break;
+            case "length":
+                cleanHeader = "#length"
+                break;
+            case "frequency":
+                cleanHeader = "#samplerate"
+                break;
+            case "bitrate":
+                cleanHeader = "#bitspersample"
+                break;
+        }
+
+        cleanHeaders.push(cleanHeader);
+    });
 
     fileEl.addEventListener("change", handleFiles, false);
     // formEl.addEventListener("submit", (e) => {
@@ -39,14 +76,18 @@ window.addEventListener("DOMContentLoaded", () => {
         } else if (currUL) {
             path = currUL.getAttribute("path");
         } else {
-            path = "/";
+            path = "";
         }
 
         let xmlhttp = new XMLHttpRequest();
         let theUrl = "/change-dir";
         xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-                alert(xmlhttp.responseText);
+                tableBody.innerHTML = '';
+
+                for (const [key, value] of Object.entries(JSON.parse(xmlhttp.responseText)["tracks"])) {
+                    renderTableRow(key, value, JSON.parse(xmlhttp.responseText)["artworks"], tableBody);
+                }
             }
         }
         xmlhttp.open("POST", theUrl);
@@ -63,10 +104,7 @@ window.addEventListener("DOMContentLoaded", () => {
     Array.prototype.forEach.call(
         document.querySelectorAll("table th"),
         function (th) {
-            th.style.position = 'relative';
-
             let grip = document.createElement('div');
-            grip.innerHTML = "&nbsp;";
             grip.style.top = 0;
             grip.style.right = 0;
             grip.style.bottom = 0;
@@ -97,6 +135,43 @@ function handleFiles() {
     const fileList = this.files;
 
     previewEl.style["background-image"] = "url(" + URL.createObjectURL(fileList[0]) + ")";
+}
+
+function renderTableRow(rowID, rowVals, artworks, tableBody) {
+    let newRow = document.createElement("tr");
+    newRow.classList.add("data-row");
+    let idEntry = document.createElement("td");
+    idEntry.style.display = "none";
+    idEntry.style.visibility = "hidden";
+    idEntry.textContent = rowID;
+    newRow.appendChild(idEntry);
+
+    let artworkEntry = document.createElement("td");
+    artworkEntry.style.display = "none";
+    artworkEntry.style.visibility = "hidden";
+    artworkEntry.setAttribute("role", "artwork");
+    artworkEntry.textContent = artworks[rowVals["artwork"]].data;
+    newRow.appendChild(artworkEntry);
+
+    cleanHeaders.forEach(cleanHeader => {
+        let entry = document.createElement("td");
+        entry.classList.add("entry");
+        entry.setAttribute("fieldmap", cleanHeader);
+        entry.textContent = rowVals[cleanHeader];
+        newRow.appendChild(entry);
+    });
+
+    newRow.addEventListener("click", e => {
+        let str = newRow.querySelector('[role="artwork"]').textContent;
+        formEl.querySelector("#preview").style["background-image"] = "url(data:image/png;base64," + str.substring(2, str.length - 1) + ")";
+
+        cleanHeaders.forEach(cleanHeader => {
+            let val = newRow.querySelector('[fieldmap="' + cleanHeader + '"]').textContent;
+            formEl.querySelector('[name="' + cleanHeader + '"]') ? formEl.querySelector('[name="' + cleanHeader + '"]').value = val : null;
+        });
+    });
+
+    tableBody.appendChild(newRow);
 }
 
 function iterateDir(dirMap, prefix, prevUL) {

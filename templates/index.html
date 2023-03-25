@@ -37,8 +37,8 @@
             <input type="file" accept="image/png, image/jpeg" name="file" id="file" style="display: none">
           </div>
           <div class="group">
-            <label class="label" for="title">Title</label>
-            <input class="field" type="text" name="title" id="title">
+            <label class="label" for="tracktitle">Title</label>
+            <input class="field" type="text" name="tracktitle" id="tracktitle">
           </div>
           <div class="group">
             <label class="label" for="artist">Artist</label>
@@ -49,16 +49,16 @@
             <input class="field" type="text" name="album" id="album">
           </div>
           <div class="group">
-            <label class="label" for="album_artist">Album Artist</label>
-            <input class="field" type="text" name="album_artist" id="album_artist">
+            <label class="label" for="albumartist">Album Artist</label>
+            <input class="field" type="text" name="albumartist" id="albumartist">
           </div>
           <div class="group basis-30">
             <label class="label" for="year">Year</label>
             <input class="field" type="number" name="year" id="year">
           </div>
           <div class="group basis-30">
-            <label class="label" for="track">Track</label>
-            <input class="field" type="number" name="track" id="track">
+            <label class="label" for="tracknumber">Track</label>
+            <input class="field" type="number" name="tracknumber" id="tracknumber">
           </div>
           <div class="group basis-30">
             <label class="label" for="discnumber">Disc Number</label>
@@ -76,19 +76,21 @@
             <label class="label" for="comment">Comment</label>
             <input class="field" type="text" name="comment" id="comment">
           </div>
+          <input type="number" name="trackid" id="trackid" style="display: none; visibility: hidden;">
           <input type="submit" value="Save Changes" class="submit">
         </form>
       </section>
       <section class="panel table">
         <table class="info">
           <thead>
+            <div id="colHeadsJSON" data-json="{{ colHeadsJSON }}"></div>
             <tr>
               {% for colHead in colHeads %}
               <th class="header">{{ colHead }}</th>
               {% endfor %}
             </tr>
           </thead>
-          <tbody>
+          <tbody id="table-body">
             {% for row in rows %}
             <tr class="data-row">
               {% for info in row %}

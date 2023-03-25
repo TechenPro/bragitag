@@ -342,7 +342,7 @@ html {
   background-color: #3e3e3e;
   color: #f9f9f9;
   display: grid;
-  grid-template-columns: 2fr 5fr; }
+  grid-template-columns: 1.5fr 5fr; }
   .s-main .panel {
     margin: 0 6px 0;
     padding: 0 10px 48px;
@@ -443,18 +443,47 @@ html {
       padding-right: 0;
       overflow-x: scroll; }
       .s-main .panel.table .info {
-        width: max-content; }
+        width: max-content;
+        position: relative; }
         .s-main .panel.table .info .header {
           width: 150px;
-          padding: 12px; }
+          padding: 14px 12px;
+          position: sticky;
+          top: 0;
+          background-color: #3e3e3e; }
           .s-main .panel.table .info .header:not(:last-child) {
             border-right: 2px solid #2a2a2a; }
           .s-main .panel.table .info .header:not(:first-child) {
             border-left: 2px solid #2a2a2a; }
-        .s-main .panel.table .info .data-row:nth-child(odd) {
-          background-color: #333333; }
-        .s-main .panel.table .info .data-row:nth-child(even) {
-          background-color: #2a2a2a; }
+        .s-main .panel.table .info .data-row {
+          position: relative;
+          cursor: pointer; }
+          .s-main .panel.table .info .data-row:nth-child(odd) {
+            background-color: #333333; }
+            .s-main .panel.table .info .data-row:nth-child(odd) .entry::-webkit-scrollbar-thumb {
+              background-color: #333333; }
+          .s-main .panel.table .info .data-row:nth-child(even) {
+            background-color: #2a2a2a; }
+            .s-main .panel.table .info .data-row:nth-child(even) .entry::-webkit-scrollbar-thumb {
+              background-color: #2a2a2a; }
+          .s-main .panel.table .info .data-row:hover {
+            background: rgba(0, 0, 0, 0.6); }
+            .s-main .panel.table .info .data-row:hover .entry::-webkit-scrollbar-thumb {
+              background-color: rgba(0, 0, 0, 0.6); }
+          .s-main .panel.table .info .data-row .entry {
+            padding: 12px 8px;
+            white-space: nowrap;
+            min-width: 75px;
+            max-width: 75px;
+            overflow-x: auto; }
+            .s-main .panel.table .info .data-row .entry:hover::-webkit-scrollbar-thumb {
+              background-color: #ccc; }
+            .s-main .panel.table .info .data-row .entry::-webkit-scrollbar {
+              height: 3px !important; }
+              .s-main .panel.table .info .data-row .entry::-webkit-scrollbar-thumb {
+                border-radius: 0.6rem; }
+              .s-main .panel.table .info .data-row .entry::-webkit-scrollbar-track {
+                background: transparent; }
 
 .dir-modal {
   width: 100%;

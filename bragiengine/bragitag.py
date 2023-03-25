@@ -2,6 +2,7 @@ import music_tag as music
 import os
 import re
 import bragiengine.pathutils as pathutils
+import base64
 
 
 class BragitagEngine:
@@ -40,7 +41,7 @@ class BragitagEngine:
         self.artworks.clear()
         for path in pathutils.get_child_audio_files(dir_path):
             self.load_meta_data(path, tracks)
-        return tracks
+        return { "tracks": tracks, "artworks": self.artworks }
 
     def load_meta_data(self, filepath, tracks):
         """Extracts relevant metadata from provided file and provides it to self.tracks and self.artworks.
@@ -86,7 +87,7 @@ class BragitagEngine:
             art_data = {"type": art.mime,
                         "width": art.width,
                         "height": art.height,
-                        "data": art.data,
+                        "data": str(base64.b64encode(art.data))
                         }
         else:
             md5 = None

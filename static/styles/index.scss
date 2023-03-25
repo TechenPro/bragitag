@@ -58,7 +58,7 @@ html {
     color: #f9f9f9;
 
     display: grid;
-    grid-template-columns: 2fr 5fr;
+    grid-template-columns: 1.5fr 5fr;
 
     .panel {
         margin: 0 6px 0;
@@ -209,10 +209,14 @@ html {
 
             .info {
                 width: max-content;
+                position: relative;
 
                 .header {
                     width: 150px;
-                    padding: 12px;
+                    padding: 14px 12px;
+                    position: sticky;
+                    top: 0;
+                    background-color: $primaryBg;
 
                     &:not(:last-child) {
                         border-right: 2px solid $tertiaryBg;
@@ -224,12 +228,71 @@ html {
                 }
 
                 .data-row {
+                    position: relative;
+                    cursor: pointer;
+
                     &:nth-child(odd) {
                         background-color: $secondaryBg;
+
+                        .entry {
+                            &::-webkit-scrollbar {
+                                &-thumb {
+                                    background-color: $secondaryBg;
+                                }
+                            }
+                        }
                     }
 
                     &:nth-child(even) {
                         background-color: $tertiaryBg;
+
+                        .entry {
+                            &::-webkit-scrollbar {
+                                &-thumb {
+                                    background-color: $tertiaryBg;
+                                }
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        background: rgba(0, 0, 0, 0.6);
+
+                        .entry {
+                            &::-webkit-scrollbar {
+                                &-thumb {
+                                    background-color: rgba(0, 0, 0, 0.6);
+                                }
+                            }
+                        }
+                    }
+
+                    .entry {
+                        padding: 12px 8px;
+                        white-space: nowrap;
+                        min-width: 75px;
+                        max-width: 75px;
+                        overflow-x: auto;
+
+                        &:hover {
+                            &::-webkit-scrollbar {
+                                &-thumb {
+                                    background-color: #ccc;
+                                }
+                            }
+                        }
+
+                        &::-webkit-scrollbar {
+                            height: 3px !important;
+
+                            &-thumb {
+                                border-radius: 0.6rem;
+                            }
+
+                            &-track {
+                                background: transparent;
+                            }
+                        }
                     }
                 }
             }
