@@ -4,13 +4,13 @@ import re
 import json
 import pathutils
 
+
 class BragitagEngine:
 
     def __init__(self, config):
         self.metadata = {}
         self.track = {}
         self.art = {}
-        self.data = [self.track, self.art]
         self.parse_config(config)
 
     def parse_config(self, config_file):
@@ -26,6 +26,15 @@ class BragitagEngine:
 
     def load_dir_tree(self):
         return pathutils.get_child_dirs(self.root_dir)
+
+    def change_active_dir(self, dir_path):
+        if not os.path.isdir(dir_path):
+            return
+        self.metadata.clear()
+        self.track.clear()
+        self.art.clear()
+        for path in pathutils.get_child_audio_files(self.root_dir):
+            self.loadMetaData(path)
 
     def loadMetaData(self, filePath):
         """Extracts relevant metadata from provided file and returns it in self.data
@@ -62,7 +71,6 @@ class BragitagEngine:
                                 "#samplerate": meta["#samplerate"].value}
         if art_data:
             self.art[art_key] = art_data
-
         self.metadata[track_id] = meta
 
     def parse_artwork(self, art):
@@ -95,19 +103,17 @@ class BragitagEngine:
         os.rename(os.path.join(self.track[Id]["parentdir"], self.track[Id]["path"]), os.path.join(
             self.track[Id]["parentdir"], newName) + ext[1])
         self.track[Id]["path"] = newName+ext[1]
-        
+
     def stringCustomize(self, Id, string):
         customStr = ""
         stringArr = string.split('%')
         for word in stringArr:
             if word in self.track[Id].keys():
                 customStr += self.track[Id][word]
-                
-            #elif word[len(word) -1] == '/':
+
+            # elif word[len(word) -1] == '/':
              #   customStr += "{:s}%".format(word[:len(word)-1])
-                
+
             else:
                 customStr += word
         return customStr
-
-
