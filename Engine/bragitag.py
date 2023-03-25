@@ -3,10 +3,13 @@ import os
 import re
 import json
 
+files = dict()
+
 def loadFolder(folder):
     track = {}
-    art = {}
-    tracks = [track,art]
+    art_dict = {}
+    data = [track, art_dict]
+    global files
     
     
     for i,filePath in enumerate(os.listdir(folder),start = 1):
@@ -15,29 +18,43 @@ def loadFolder(folder):
             loadFolder(os.path.join(folder,filePath))
         elif ext:
            meta = music.load_file(os.path.join(folder,filePath))
-           track[str(i)] = {"tracktitle": meta["tracktitle"].value,
-                          "artist": meta["artist"].value,
-                          "album": meta["album"].value,
-                          "albumartist": meta["albumartist"].value,
-                          "composer": meta["composer"].value,
-                          "tracknumber": meta["tracknumber"].value,
-                          "totaltracks": meta["totaltracks"].value,
-                          "discnumber": meta["discnumber"].value,
-                          "totaldiscs": meta["totaldiscs"].value,
-                          "genre": meta["genre"].value,
-                          "year": meta["genre"].value,
-                          "isrc": meta["isrc"].value,
-                          "comment": meta["comment"].value,
-                          "compilation": meta["compilation"].value,
-                          "#bitrate": meta["#bitrate"].value,
-                          "#codec": meta["#codec"].value,
-                          "#length": meta["#length"].value,
-                          "#channels": meta["#channels"].value,
-                          "#bitspersample": meta["#bitspersample"].value,
-                          "#samplerate": meta["#samplerate"].value}
-                          
-        
-    return json.dumps(tracks)
+           files[i] = meta
+
+        art_key = parse_artwork(meta["artwork"].first)
+
+        track[i] = {"tracktitle": meta["tracktitle"].value,
+                        "artist": meta["artist"].value,
+                        "album": meta["album"].value,
+                        "albumartist": meta["albumartist"].value,
+                        "artwork": art_key,
+                        "composer": meta["composer"].value,
+                        "tracknumber": meta["tracknumber"].value,
+                        "totaltracks": meta["totaltracks"].value,
+                        "discnumber": meta["discnumber"].value,
+                        "totaldiscs": meta["totaldiscs"].value,
+                        "genre": meta["genre"].value,
+                        "year": meta["genre"].value,
+                        "isrc": meta["isrc"].value,
+                        "comment": meta["comment"].value,
+                        "compilation": meta["compilation"].value,
+                        "#bitrate": meta["#bitrate"].value,
+                        "#codec": meta["#codec"].value,
+                        "#length": meta["#length"].value,
+                        "#channels": meta["#channels"].value,
+                        "#bitspersample": meta["#bitspersample"].value,
+                        "#samplerate": meta["#samplerate"].value}
+           
+    return json.dumps(data)
+
+def parse_artwork(art):
+    if art:
+        md5 = re.fullmatch(".*([a-z0-9]{32})", str(art)).group(1)
+        art_data = {"type": art.mime,
+                    "width": art.width,
+                    "height": art.height,
+                    "data": art.data,
+                    }
+    return (md5, art_data)
 
 
 def editFile(fileInfo):
@@ -47,10 +64,16 @@ def editFile(fileInfo):
 
     
 def main():
-    tracks = loadFolder("C:/Users/19bst/Downloads/RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️")
+    root_folder = 'C:\\Users\\arire\\OneDrive - University of Utah\\_Projects\HackUSU23\\TestSongs\\\RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️'
+
+    tracks = loadFolder(root_folder)
     editFile(tracks)
     #print(tracks[0]["15"]["tracktitle"])
-    #print(tracks)
+    # print(tracks)
 
 if __name__ == "__main__":
     main()
+
+
+
+        
