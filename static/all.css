@@ -352,8 +352,7 @@ html {
       height: 3px !important; }
       .s-main .panel::-webkit-scrollbar-thumb {
         background-color: #3e3e3e;
-        border-radius: 0.6rem;
-        transition: background-color 300ms; }
+        border-radius: 0.6rem; }
       .s-main .panel::-webkit-scrollbar-track {
         background: transparent; }
     .s-main .panel.edit {

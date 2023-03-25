@@ -25,7 +25,7 @@
     </header>
     <main class="s-main">
       <section class="panel edit">
-        <form action="/send-info" method="post" class="form">
+        <form action="/send-info" method="post" class="form" id="form">
           <div class="group cover">
               <label for="file" class="pointer">
                 <div class="preview" id="preview"></div>
@@ -81,17 +81,22 @@
       </section>
       <section class="panel table">
         <table class="info">
-            {% for colHead in colHeads %}
-            <th class="header">{{ colHead }}</th>
+          <thead>
+            <tr>
+              {% for colHead in colHeads %}
+              <th class="header">{{ colHead }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+            <tr>
+              {% for info in row %}
+              <td class="entry">{{ row[info] }}</td>
+              {% endfor %}
+            </tr>
             {% endfor %}
-          </tr>
-          {% for row in rows %}
-          <tr>
-            {% for info in row %}
-            <td class="entry">{{ row[info] }}</td>
-            {% endfor %}
-          </tr>
-          {% endfor %}
+          </tbody>
         </table>
       </section>
     </main>
