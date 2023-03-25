@@ -20,28 +20,28 @@ class BragitagEngine:
         keys = self.track.keys()
         track_id = len(keys) +1
         self.track[track_id] = {"parentdir": os.path.relpath(os.path.join(filePath,os.pardir)),
-                              "path": filePath,
-                              "tracktitle": meta["tracktitle"].value,
-                              "artist": meta["artist"].value,
-                              "album": meta["album"].value,
-                              "albumartist": meta["albumartist"].value,
-                              "artwork": art_key,
-                              "composer": meta["composer"].value,
-                              "tracknumber": meta["tracknumber"].value,
-                              "totaltracks": meta["totaltracks"].value,
-                              "discnumber": meta["discnumber"].value,
-                              "totaldiscs": meta["totaldiscs"].value,
-                              "genre": meta["genre"].value,
-                              "year": meta["genre"].value,
-                              "isrc": meta["isrc"].value,
-                              "comment": meta["comment"].value,
-                              "compilation": meta["compilation"].value,
-                              "#bitrate": meta["#bitrate"].value,
-                              "#codec": meta["#codec"].value,
-                              "#length": meta["#length"].value,
-                              "#channels": meta["#channels"].value,
-                              "#bitspersample": meta["#bitspersample"].value,
-                              "#samplerate": meta["#samplerate"].value}
+                                "path": filePath,
+                                "tracktitle": meta["tracktitle"].value,
+                                "artist": meta["artist"].value,
+                                "album": meta["album"].value,
+                                "albumartist": meta["albumartist"].value,
+                                "artwork": art_key,
+                                "composer": meta["composer"].value,
+                                "tracknumber": meta["tracknumber"].value,
+                                "totaltracks": meta["totaltracks"].value,
+                                "discnumber": meta["discnumber"].value,
+                                "totaldiscs": meta["totaldiscs"].value,
+                                "genre": meta["genre"].value,
+                                "year": meta["genre"].value,
+                                "isrc": meta["isrc"].value,
+                                "comment": meta["comment"].value,
+                                "compilation": meta["compilation"].value,
+                                "#bitrate": meta["#bitrate"].value,
+                                "#codec": meta["#codec"].value,
+                                "#length": meta["#length"].value,
+                                "#channels": meta["#channels"].value,
+                                "#bitspersample": meta["#bitspersample"].value,
+                                "#samplerate": meta["#samplerate"].value}
         if art_data:
             self.art[art_key] = art_data
         
@@ -63,21 +63,26 @@ class BragitagEngine:
 
     def editFile(self,fileInfo):
         fileInfo = json.loads(fileInfo)
-        meta = BragitagEngine.metadata
+        meta = self.metadata
         for Id in fileInfo["ids"]:
-            meta[Id]            
+            for key in fileInfo["changes"]:
+                meta[Id][key] = fileInfo["changes"][key]
+        for meta in self.metadata.values():
+            meta.save()
 
     
 def main():
     engine = BragitagEngine()
-    root_folder = 'C:\\Users\\arire\\OneDrive - University of Utah\\_Projects\HackUSU23\\TestSongs\\\RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️'
+    root_folder = 'C:/Users/19bst/Downloads/RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️'
     filename = '01. Everything In Its Right Place.flac'
     nopicture = 'Hymns_004_TruthEternal_eng.mp3'
-    
+    editJson = '{"ids":[6,7,8],"changes":{"tracktitle":"HELLO WORLD", "comment":"THIS IS A COMMENT",}}'
+    for filename in os.listdir(root_folder):
+        engine.loadMetaData(os.path.join(root_folder, filename))
+    engine.editFile(editJson)
+    print(engine.metadata[6]["comment"])
 
-    engine.loadMetaData(os.path.join(root_folder, nopicture))
-
-    print(engine.data)
+    #print(engine.data)
 
     # BragitagEngine.editFile(tracks)
 
