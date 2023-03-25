@@ -1,7 +1,6 @@
 import music_tag as music
 import os
 import re
-import json
 import pathutils
 
 class BragitagEngine:
@@ -31,7 +30,7 @@ class BragitagEngine:
         """Extracts relevant metadata from provided file and returns it in self.data
         Each track gets a unique ID.
         Also stores track file in self.metadata (indexed using the same ID)"""
-        meta = music.load_file(os.path.join(filePath))
+        meta = music.load_file(filePath)
 
         art_key, art_data = self.parse_artwork(meta["artwork"].first)
 
@@ -80,8 +79,7 @@ class BragitagEngine:
 
         return md5, art_data
 
-    def editFileJson(self, fileInfo):
-        fileInfo = json.loads(fileInfo)
+    def editFile(self, fileInfo):
         for Id in fileInfo["ids"]:
             for key in fileInfo["changes"]:
                 self.editFileTags(Id, key, fileInfo["changes"][key])
@@ -95,8 +93,9 @@ class BragitagEngine:
         os.rename(os.path.join(self.track[Id]["parentdir"], self.track[Id]["path"]), os.path.join(
                   self.track[Id]["parentdir"], newName) + ext[1])
         self.track[Id]["path"] = newName+ext[1]
+        self.metadata[Id] = music.load_file(os.path.join(self.track[Id]["parentdir"], newName) + ext[1])
         
-    def stringCustomize(self, Id, string):
+    def stringCustomFormat(self, Id, string):
         customStr = ""
         stringArr = string.split('%')
         for word in stringArr:
