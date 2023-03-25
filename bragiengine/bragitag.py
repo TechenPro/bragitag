@@ -2,6 +2,8 @@ import music_tag as music
 import os
 import re
 import pathutils
+import bragiengine.pathutils as pathutils
+
 
 class BragitagEngine:
 
@@ -9,7 +11,6 @@ class BragitagEngine:
         self.metadata = {}
         self.track = {}
         self.art = {}
-        self.data = [self.track, self.art]
         self.parse_config(config)
 
     def parse_config(self, config_file):
@@ -25,6 +26,15 @@ class BragitagEngine:
 
     def load_dir_tree(self):
         return pathutils.get_child_dirs(self.root_dir)
+
+    def change_active_dir(self, dir_path):
+        if not os.path.isdir(dir_path):
+            return
+        self.metadata.clear()
+        self.track.clear()
+        self.art.clear()
+        for path in pathutils.get_child_audio_files(self.root_dir):
+            self.loadMetaData(path)
 
     def loadMetaData(self, filePath):
         """Extracts relevant metadata from provided file and returns it in self.data
@@ -61,7 +71,6 @@ class BragitagEngine:
                                 "#samplerate": meta["#samplerate"].value}
         if art_data:
             self.art[art_key] = art_data
-
         self.metadata[track_id] = meta
 
     def parse_artwork(self, art):
@@ -95,6 +104,9 @@ class BragitagEngine:
         self.track[Id]["path"] = newName+ext[1]
         self.metadata[Id] = music.load_file(os.path.join(self.track[Id]["parentdir"], newName) + ext[1])
         
+    
+
+
     def stringCustomFormat(self, Id, string):
         customStr = ""
         stringArr = string.split('%')
@@ -111,5 +123,3 @@ class BragitagEngine:
             else:
                 customStr += word
         return customStr
-
-
