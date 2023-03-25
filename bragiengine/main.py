@@ -12,7 +12,7 @@ def main():
     # #engine.editFileJson(editJson)
     # engine.editFileName(4,"4 3")
     # engine.editFileTags(4, "album", "New Artist")
-    string = "%album% - %tracktitle% - /%hello"
+    string = "%album% - %tracktitle% -%hello"
     str1 = engine.stringCustomize(3,string)
     print(str1)
 if __name__ == "__main__":

@@ -93,7 +93,7 @@ class BragitagEngine:
     def editFileName(self, Id, newName):
         ext = os.path.splitext(self.track[Id]["path"])
         os.rename(os.path.join(self.track[Id]["parentdir"], self.track[Id]["path"]), os.path.join(
-            self.track[Id]["parentdir"], newName) + ext[1])
+                  self.track[Id]["parentdir"], newName) + ext[1])
         self.track[Id]["path"] = newName+ext[1]
         
     def stringCustomize(self, Id, string):
@@ -102,9 +102,12 @@ class BragitagEngine:
         for word in stringArr:
             if word in self.track[Id].keys():
                 customStr += self.track[Id][word]
+            
+            elif word == "":
+                continue
                 
-            #elif word[len(word) -1] == '/':
-             #   customStr += "{:s}%".format(word[:len(word)-1])
+            elif word[-1] == '\\':
+                customStr += "{:s}%".format(word[:len(word)-1])
                 
             else:
                 customStr += word
