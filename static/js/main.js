@@ -38,7 +38,7 @@ window.addEventListener("DOMContentLoaded", () => {
     iterateDir(dirTree, "", null);
 
     document.querySelector("#dummyframe").addEventListener("load", e => {
-        let success = e.target.contentWindow.document.querySelector("body").textContent == "file uploaded successfully" && requestSent ? true : false;
+        let success = e.target.contentWindow.document.querySelector("body").textContent == "done" && requestSent ? true : false;
 
         if (success) {
             formChanges['ids'].forEach(trackid => {
