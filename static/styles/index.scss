@@ -5,8 +5,6 @@ $primaryBg: #3e3e3e;
 $secondaryBg: #dddddd;
 $accentYellow: #abab30;
 
-$navHeight: 116.64px;
-
 html {
     font-family: 'Roboto', sans-serif;
     height: 100vh;
@@ -18,7 +16,6 @@ html {
     background-color: #232323;
     color: white;
     padding: 20px;
-    height: $navHeight;
 
     .name {
         margin-top: 0;
@@ -32,6 +29,12 @@ html {
 
         &.bottom {
             color: #abab30;
+
+            .item {
+                &:not(:last-child) {
+                    margin-right: 24px;
+                }
+            }
         }
 
         &.top {
@@ -51,12 +54,35 @@ html {
 
     display: grid;
     grid-template-columns: 2fr 5fr;
-    height: 100%;
 
     .panel {
-        margin: 0 16px 48px;
-        height: 100%;
+        margin: 0 6px 0;
+        padding: 0 10px 48px;
+        height: calc(100vh - 116.64px);
         overflow-y: auto;
+
+        &:hover {
+            &::-webkit-scrollbar {
+                &-thumb {
+                    background-color: #ccc;
+                }
+            }
+        }
+
+        &::-webkit-scrollbar {
+            width: 3px !important;
+            height: 3px !important;
+
+            &-thumb {
+                background-color: $primaryBg;
+                border-radius: 0.6rem;
+                transition: background-color 300ms;
+            }
+
+            &-track {
+                background: transparent;
+            }
+        }
 
         &.edit {
             padding-top: 48px;
@@ -87,6 +113,7 @@ html {
                         background-color: $secondaryBg;
                         border: none;
                         transition: background 300ms;
+                        padding: 6px 10px;
 
                         &:focus,
                         &:hover {
@@ -147,17 +174,42 @@ html {
                                 border-radius: 25px;
                                 background-color: $accentYellow;
                                 color: $primaryBg;
-                                cursor: pointer;
                             }
                         }
+                    }
+                }
+
+                .submit {
+                    font-weight: 600;
+                    padding: 10px 16px;
+                    border-radius: 25px;
+                    background-color: $accentYellow;
+                    color: $primaryBg;
+                    border: none;
+                    flex-basis: 100%;
+                    transition: color 300ms;
+                    margin-top: 16px;
+
+                    &:hover {
+                        color: $secondaryBg;
                     }
                 }
             }
         }
 
         &.table {
-            height: 100%;
-            overflow: hidden;
+            margin-right: 0;
+            padding-right: 0;
+
+            overflow-x: scroll;
+
+            .info {
+                width: max-content;
+
+                .header {
+                    width: 150px;
+                }
+            }
         }
     }
 }
