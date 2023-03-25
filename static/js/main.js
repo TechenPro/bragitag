@@ -13,6 +13,11 @@ let currUL = null;
 
 let cleanHeaders = [];
 
+let formChanges = {
+    'ids': [],
+    'changes': {}
+};
+
 window.addEventListener("DOMContentLoaded", () => {
     const fileEl = document.querySelector("#file");
     const dirDialogEl = document.querySelector("#dir-modal");
@@ -62,9 +67,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     fileEl.addEventListener("change", handleFiles, false);
-    // formEl.addEventListener("submit", (e) => {
-
-    // });
+    formEl.addEventListener("submit", (e) => {
+        formEl.querySelector('[name="json"]').value = JSON.stringify(formChanges);
+        // e.preventDefault();
+    });
+    formEl.addEventListener("change", e => {
+        formChanges['ids'].includes(formEl.querySelector('[name="trackid"]').value) ? null : formChanges['ids'].push(formEl.querySelector('[name="trackid"]').value);
+        formChanges['changes'][e.target.name] = e.target.value;
+    });
     navFileEl.addEventListener("click", () => {
         dirDialogEl.showModal();
     });
@@ -87,6 +97,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
                 for (const [key, value] of Object.entries(JSON.parse(xmlhttp.responseText)["tracks"])) {
                     renderTableRow(key, value, JSON.parse(xmlhttp.responseText)["artworks"], tableBody);
+                    dirDialogEl.close();
                 }
             }
         }
@@ -141,6 +152,7 @@ function renderTableRow(rowID, rowVals, artworks, tableBody) {
     let newRow = document.createElement("tr");
     newRow.classList.add("data-row");
     let idEntry = document.createElement("td");
+    idEntry.setAttribute("role", "trackid");
     idEntry.style.display = "none";
     idEntry.style.visibility = "hidden";
     idEntry.textContent = rowID;
@@ -164,6 +176,7 @@ function renderTableRow(rowID, rowVals, artworks, tableBody) {
     newRow.addEventListener("click", e => {
         let str = newRow.querySelector('[role="artwork"]').textContent;
         formEl.querySelector("#preview").style["background-image"] = "url(data:image/png;base64," + str.substring(2, str.length - 1) + ")";
+        formEl.querySelector('[name="trackid"]').value = newRow.querySelector('[role="trackid"]').textContent;
 
         cleanHeaders.forEach(cleanHeader => {
             let val = newRow.querySelector('[fieldmap="' + cleanHeader + '"]').textContent;

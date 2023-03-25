@@ -25,7 +25,7 @@
     </header>
     <main class="s-main">
       <section class="panel edit">
-        <form action="/send-info" method="post" class="form" id="form" enctype="multipart/form-data">
+        <form action="/send-info" method="post" class="form" id="form" enctype="multipart/form-data" target="dummyframe">
           <div class="group cover">
               <label for="file" class="pointer">
                 <div class="preview" id="preview"></div>
@@ -76,7 +76,8 @@
             <label class="label" for="comment">Comment</label>
             <input class="field" type="text" name="comment" id="comment">
           </div>
-          <input type="number" name="trackid" id="trackid" style="display: none; visibility: hidden;">
+          <input type="text" name="trackid" id="trackid" style="display: none; visibility: hidden;">
+          <input type="text" name="json" id="json" style="display: none; visibility: hidden;">
           <input type="submit" value="Save Changes" class="submit">
         </form>
       </section>
@@ -110,12 +111,11 @@
         <div class="contents" id="contents">
           <h1 id="dir-path">/</h1>
           <div id="dir_tree_json" style="display: none; visibility: hidden;" data-json="{{ dir_tree_json }}"></div>
-          <div id="dir_holder" class="dir-holder">
-
-          </div>
+          <div id="dir_holder" class="dir-holder"></div>
           <button class="use-dir" id="dir-submit">Use Current Directory</button>
         </div>
       </dialog>
+      <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
     </footer>
   </body>
 </html>
