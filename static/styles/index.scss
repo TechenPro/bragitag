@@ -16,7 +16,6 @@ html {
     background-color: #232323;
     color: white;
     padding: 20px;
-    height: $navHeight;
 
     .name {
         margin-top: 0;
@@ -55,7 +54,6 @@ html {
 
     display: grid;
     grid-template-columns: 2fr 5fr;
-    height: 100%;
 
     .panel {
         margin: 0 6px 0;
