@@ -74,37 +74,33 @@ class BragitagEngine:
 
         return (md5, art_data)
 
-    def editFile(self,fileInfo):
+    def editFileJson(self,fileInfo):
         fileInfo = json.loads(fileInfo)
-        meta = self.metadata
         for Id in fileInfo["ids"]:
             for key in fileInfo["changes"]:
-                meta[Id][key] = fileInfo["changes"][key]
+                self.editFileTags(Id,key,fileInfo["changes"][key])
+
+    def editFileTags(self,Id,key,value):
+        self.metadata[Id][key] = value
         for meta in self.metadata.values():
             meta.save()
+            
+    def editFileName(self,Id,newName):
+        os.rename(self.track[Id]["path"],newName)
 
-    
+
+
 def main():
 
-    engine = BragitagEngine("Engine/.config")
+    engine = BragitagEngine(".config")
+    root_folder = "C:/Users/19bst/Downloads/RADIOHEAD - KID A MNESIA (2021)  FLAC [PMEDIA] ⭐️"
 
-
-    filename = '01. Everything In Its Right Place.flac'
-    nopicture = 'Hymns_004_TruthEternal_eng.mp3'
-    editJson = '{"ids":[6,7,8],"changes":{"tracktitle":"HELLO WORLD", "comment":"THIS IS A COMMENT",}}'
+    editJson = '{"ids":[6,7,8],"changes":{"tracktitle":"HELLO WORLD", "comment":"THIS IS A COMMENT"}}'
     for filename in os.listdir(root_folder):
         engine.loadMetaData(os.path.join(root_folder, filename))
-    engine.editFile(editJson)
+    engine.editFileJson(editJson)
     print(engine.metadata[6]["comment"])
-
-
-    #print(engine.data)
-
-
-    # BragitagEngine.editFile(tracks)
-
-    #print(tracks[0]["15"]["tracktitle"])
-    # print(tracks)
+    engine.editFileName(4,"HELLO!.flac")
 
 if __name__ == "__main__":
     main()
