@@ -5,6 +5,10 @@ import bragiengine.pathutils as pathutils
 
 
 class BragitagEngine:
+    """BragitagEngine
+    Description: Class for modifying audio file metadata and interfacing with the webapp
+    Authors: Ari Lacanienta, Benjamin Stone, Turin Briggs
+    Date: 03/25/2023"""
 
     def __init__(self, config):
         """initialize and configure engine"""

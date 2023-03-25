@@ -1,3 +1,7 @@
+"""pathutils.py
+Description: Utility functions for listing files and subdirectories
+Author: Turin Briggs
+Date: 03/25/2023"""
 import os
 from pathlib import Path
 
