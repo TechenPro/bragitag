@@ -31,15 +31,17 @@ class BragitagEngine:
 
     def change_active_dir(self, dir_path):
         """switches to new active directory, making contained music metadata files available for editing"""
+        tracks = dict()
         if not os.path.isdir(dir_path):
             return
         self.files.clear()
         self.tracks.clear()
         self.artworks.clear()
         for path in pathutils.get_child_audio_files(self.root_dir):
-            self.load_meta_data(path)
+            self.load_meta_data(path, tracks)
+        return tracks
 
-    def load_meta_data(self, filepath):
+    def load_meta_data(self, filepath, tracks):
         """Extracts relevant metadata from provided file and provides it to self.tracks and self.artworks.
         Each track gets a unique ID.
         Also stores track file in self.files (indexed using the same ID)"""
@@ -47,9 +49,9 @@ class BragitagEngine:
 
         art_key, art_data = self.parse_artwork(meta["artwork"].first)
 
-        keys = self.tracks.keys()
+        keys = tracks.keys()
         track_id = len(keys) + 1
-        self.tracks[track_id] = {"parentdir": os.path.relpath(os.path.join(filepath, os.pardir)),
+        tracks[track_id] = {"parentdir": os.path.relpath(os.path.join(filepath, os.pardir)),
                                 "path": os.path.basename(filepath).split('/')[-1],
                                 "tracktitle": meta["tracktitle"].value,
                                 "artist": meta["artist"].value,
@@ -100,6 +102,8 @@ class BragitagEngine:
             for field in file_info["changes"]:
                 self.files[track_id][field] = file_info["changes"][field]
             self.files[track_id].save()
+
+        
 
     def edit_filename(self, track_id, new_name):
         """changes a tracks filename"""
